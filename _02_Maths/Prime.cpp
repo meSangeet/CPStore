@@ -1,8 +1,8 @@
 //check prime
 
 #include <iostream>
- #include <cmath>
- using namespace std;
+#include <cmath>
+using namespace std;
 bool isPrimeOptimized(int n) {
  	if (n <= 1) return false;
  	if (n == 2) return true;
@@ -65,4 +65,3 @@ map<ll, ll> primeFactorization(ll num) {
 	}
 	return factors;
 }
-
