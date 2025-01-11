@@ -1,0 +1,1 @@
+//to get index of upper bound -> int ind = upper_bound(a.begin(), a.end(), curNo) - a.begin();
