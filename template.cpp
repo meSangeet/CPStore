@@ -25,17 +25,16 @@ void fast_io() {
     cout.tie(nullptr);
 }
 
-// Main solver function
 void solve() {
-    // Implement your solution here
+    
 }
 
 int main() {
     fast_io();
-    int t = 1; // Number of test cases
-    // cin >> t; // Uncomment for multiple test cases
+    int t = 1;
+    cin >> t;
     while (t--) {
-        solve()
+        solve();
     }
     return 0;
 }
