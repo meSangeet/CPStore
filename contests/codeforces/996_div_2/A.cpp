@@ -19,23 +19,27 @@
 using namespace std;
 #define ll long long
 
+void solve() {
+    ll n, a, b; cin>>n>>a>>b;
+    if(abs(b-a)%2 == 0){
+        cout<<"YES\n";
+    }else{
+        cout<<"NO\n";
+    }
+}
+
 void fast_io() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 }
 
-// Main solver function
-void solve() {
-    // Implement your solution here
-}
-
 int main() {
     fast_io();
-    int t = 1; // Number of test cases
-    // cin >> t; // Uncomment for multiple test cases
+    int t = 1; 
+    cin>>t;
     while (t--) {
-        solve()
+        solve();
     }
     return 0;
 }
