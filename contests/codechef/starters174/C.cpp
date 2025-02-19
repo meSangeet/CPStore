@@ -90,62 +90,50 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-const int MAX = 2e5+2;
- 
-vector<ll> smallestPrime(MAX+2, 0);  // Stores the smallest prime factor for each number
-set<ll> primes;
- 
-// Function to sieve and fill the smallestPrime array
-void sieve() {
-	for (int i = 1; i <= MAX; ++i) smallestPrime[i] = i;
- 
-	for (int p = 2; p * p <= MAX; ++p) {
-    	if (smallestPrime[p] == p) {
-        	primes.insert(p);
-        	for (int i = p * p; i <= MAX; i += p) {
-            	if (smallestPrime[i] == i) {
-                	smallestPrime[i] = p;
-            	}
-        	}
-    	}
-	}
-}
-
 // Solve Function
 void solve() {
     ll n; cin>>n;
-    ll ans = 0;
-    ll noOfPrimes = 0;
-    map<ll,ll> m;
+    ll mx = 0;
     vi a(n);
     for(int i = 0; i<n; i++){
-        ll no; cin>>no;
-        a[i] = no;
-        //ya to prime hai
-        if(primes.count(no)){
-            ll sub = noOfPrimes - m[no];
-            ans += sub;
-            noOfPrimes++;
-        }
-        m[no]++;
+        ll p; cin>>p;
+        a[i] = p;
+        mx = max(mx, p);
     }
-    set<ll> counted;
-    for(int i = 0; i<n; i++){
-        if(primes.count(a[i])) continue;
-        ll sp = smallestPrime[a[i]];
-        ll secSp = a[i]/sp;
-        if(!primes.count(secSp)) continue;
-        ans += m[sp];
-        if(secSp != sp){
-            ans += m[secSp];
-        }
-        if(!counted.count(a[i])){
-            ll nn = m[a[i]];
-            ans += (nn*(nn+1))/2;
-            counted.insert(a[i]);
+
+    //now we have the maximum no as mx which can be the greatest gcd
+    //so one possible answer to our problem is with us which is mx + m[mx] 
+    //can we make more than this  idk but what's the least possible gcd
+    // gcd cannot be lesser than mx+m[mx]-N other wise even all the elements 
+    //included will not be able to match up to it
+
+    //lessgo
+
+    ll leastGCD = max(1ll,mx + 1 - n);
+    // vector<ll> m(n+2, 0);
+    unordered_map<ll,ll> m;
+    for(ll x : a){
+        if(x >= leastGCD){
+            m[x]++;
         }
     }
-    cout<<ans<<endl;
+    ll ans = mx + m[mx];
+    for(ll i = leastGCD; i < mx; i++){
+        //now we need to check the multiple of each
+        if(leastGCD <= 0){
+            continue; 
+        }
+        ll curGCD = i;
+        ll temp = 0;
+        ll fact = i;
+        while(curGCD <= mx){
+            temp += m[curGCD];
+            curGCD += fact;
+        }
+        ans = max(ans, fact + temp);
+    } 
+
+    cout<<ans<<endl; 
 }
 
 // Main Function
@@ -153,7 +141,6 @@ int main() {
     #ifndef ONLINE_JUDGE
     freopen("Debug.txt", "w", stderr);
     #endif
-    sieve();
 
     fast_io();
     int t = 1;

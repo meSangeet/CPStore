@@ -30,12 +30,12 @@ const ll INF = LLONG_MAX;
 #define fast_io() ios::sync_with_stdio(false); cin.tie(nullptr);
 #define all(v) (v).begin(), (v).end()
 #define rall(v) (v).rbegin(), (v).rend()
-#define pr(a) cout<<a<<endl;
-#define pY pr("YES");
-#define pN pr("NO");
-#define py pr("Yes");
-#define pn pr("No");
+#define p(a) cout<<a<<endl;
 #define pb push_back
+#define pY p("YES\n");
+#define pN p("NO\n");
+#define py p("Yes\n");
+#define pn p("No\n");
 #define eb emplace_back
 #define mp make_pair
 #define fi first
@@ -90,62 +90,37 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-const int MAX = 2e5+2;
- 
-vector<ll> smallestPrime(MAX+2, 0);  // Stores the smallest prime factor for each number
-set<ll> primes;
- 
-// Function to sieve and fill the smallestPrime array
-void sieve() {
-	for (int i = 1; i <= MAX; ++i) smallestPrime[i] = i;
- 
-	for (int p = 2; p * p <= MAX; ++p) {
-    	if (smallestPrime[p] == p) {
-        	primes.insert(p);
-        	for (int i = p * p; i <= MAX; i += p) {
-            	if (smallestPrime[i] == i) {
-                	smallestPrime[i] = p;
-            	}
-        	}
-    	}
-	}
-}
-
 // Solve Function
 void solve() {
-    ll n; cin>>n;
-    ll ans = 0;
-    ll noOfPrimes = 0;
-    map<ll,ll> m;
-    vi a(n);
-    for(int i = 0; i<n; i++){
-        ll no; cin>>no;
-        a[i] = no;
-        //ya to prime hai
-        if(primes.count(no)){
-            ll sub = noOfPrimes - m[no];
-            ans += sub;
-            noOfPrimes++;
-        }
-        m[no]++;
-    }
-    set<ll> counted;
-    for(int i = 0; i<n; i++){
-        if(primes.count(a[i])) continue;
-        ll sp = smallestPrime[a[i]];
-        ll secSp = a[i]/sp;
-        if(!primes.count(secSp)) continue;
-        ans += m[sp];
-        if(secSp != sp){
-            ans += m[secSp];
-        }
-        if(!counted.count(a[i])){
-            ll nn = m[a[i]];
-            ans += (nn*(nn+1))/2;
-            counted.insert(a[i]);
+    string s; cin>>s;
+    int n = s.length();
+    vector<int> vec(n,0);
+    int i = 0;
+    int cnt = 0;
+    while(i+3 < n){
+        if(s[i] == '1' and s[i+1] == '1' and s[i+2] == '0' and s[i+3] == '0'){
+            vec[i] = 1;
+            vec[i] = 2;
+            vec[i] = 3;
+            vec[i] = 4;
+            cnt++
+            i += 4;
+        }else{
+            i++;
         }
     }
-    cout<<ans<<endl;
+
+    int q; cin>>q;
+    while(q--){
+        int ind; cin>>ind;
+        char v; cin>>v;
+        if(s[ind] == v){
+            if(cnt > 0){
+                cout
+            }
+        }
+        
+    }
 }
 
 // Main Function
@@ -153,7 +128,6 @@ int main() {
     #ifndef ONLINE_JUDGE
     freopen("Debug.txt", "w", stderr);
     #endif
-    sieve();
 
     fast_io();
     int t = 1;

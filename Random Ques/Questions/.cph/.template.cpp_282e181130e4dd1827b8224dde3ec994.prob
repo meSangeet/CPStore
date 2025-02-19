@@ -1,0 +1,1 @@
+{"name":"Local: template","url":"/Users/sangeetsharma/Workstations/School/CPStore/Questions/template.cpp","tests":[{"id":1737128756928,"input":"1\n4\n1 2\n1 3\n1 4","output":"2\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/sangeetsharma/Workstations/School/CPStore/Questions/template.cpp","group":"local","local":true}

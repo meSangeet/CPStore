@@ -90,62 +90,40 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-const int MAX = 2e5+2;
- 
-vector<ll> smallestPrime(MAX+2, 0);  // Stores the smallest prime factor for each number
-set<ll> primes;
- 
-// Function to sieve and fill the smallestPrime array
-void sieve() {
-	for (int i = 1; i <= MAX; ++i) smallestPrime[i] = i;
- 
-	for (int p = 2; p * p <= MAX; ++p) {
-    	if (smallestPrime[p] == p) {
-        	primes.insert(p);
-        	for (int i = p * p; i <= MAX; i += p) {
-            	if (smallestPrime[i] == i) {
-                	smallestPrime[i] = p;
-            	}
-        	}
-    	}
-	}
+ll ss(ll n){
+    ll an = 0;
+    while(n){
+        an += n%10;
+        n /= 10;
+    }
+    return an;
 }
-
 // Solve Function
 void solve() {
-    ll n; cin>>n;
-    ll ans = 0;
-    ll noOfPrimes = 0;
-    map<ll,ll> m;
-    vi a(n);
-    for(int i = 0; i<n; i++){
-        ll no; cin>>no;
-        a[i] = no;
-        //ya to prime hai
-        if(primes.count(no)){
-            ll sub = noOfPrimes - m[no];
-            ans += sub;
-            noOfPrimes++;
-        }
-        m[no]++;
+    ll x,y; cin>>x>>y;
+    if(x+1 == y){
+        py;
+        return;
     }
-    set<ll> counted;
-    for(int i = 0; i<n; i++){
-        if(primes.count(a[i])) continue;
-        ll sp = smallestPrime[a[i]];
-        ll secSp = a[i]/sp;
-        if(!primes.count(secSp)) continue;
-        ans += m[sp];
-        if(secSp != sp){
-            ans += m[secSp];
-        }
-        if(!counted.count(a[i])){
-            ll nn = m[a[i]];
-            ans += (nn*(nn+1))/2;
-            counted.insert(a[i]);
-        }
+    if(y >= x){
+        pn;
+        return;
     }
-    cout<<ans<<endl;
+    ll temp = x-y;
+    // temp++;
+    if(temp%9 == 8){
+        py;
+        return;
+    }
+
+    pn;
+    return;
+    if(x > y and (x-y)%9 == 8){
+        py;
+    }
+    else{
+        pn;
+    }
 }
 
 // Main Function
@@ -153,7 +131,6 @@ int main() {
     #ifndef ONLINE_JUDGE
     freopen("Debug.txt", "w", stderr);
     #endif
-    sieve();
 
     fast_io();
     int t = 1;

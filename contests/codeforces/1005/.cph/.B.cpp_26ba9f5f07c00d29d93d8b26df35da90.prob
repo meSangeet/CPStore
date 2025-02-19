@@ -1,0 +1,1 @@
+{"name":"Local: B","url":"/Users/sangeetsharma/Workstations/School/CPStore/1005/B.cpp","tests":[{"id":1739717009509,"input":"3\n1\n1\n10\n1 1 2 3 4 10 1 2 8 9\n4\n2 1 3 2\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/sangeetsharma/Workstations/School/CPStore/1005/B.cpp","group":"local","local":true}

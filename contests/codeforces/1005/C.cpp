@@ -90,59 +90,101 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-const int MAX = 2e5+2;
- 
-vector<ll> smallestPrime(MAX+2, 0);  // Stores the smallest prime factor for each number
-set<ll> primes;
- 
-// Function to sieve and fill the smallestPrime array
-void sieve() {
-	for (int i = 1; i <= MAX; ++i) smallestPrime[i] = i;
- 
-	for (int p = 2; p * p <= MAX; ++p) {
-    	if (smallestPrime[p] == p) {
-        	primes.insert(p);
-        	for (int i = p * p; i <= MAX; i += p) {
-            	if (smallestPrime[i] == i) {
-                	smallestPrime[i] = p;
-            	}
-        	}
-    	}
-	}
-}
-
 // Solve Function
 void solve() {
     ll n; cin>>n;
-    ll ans = 0;
-    ll noOfPrimes = 0;
-    map<ll,ll> m;
     vi a(n);
+    rv(a);
+    vi b;
+    ll cr = 0;
+    bool flag = false;
+
     for(int i = 0; i<n; i++){
-        ll no; cin>>no;
-        a[i] = no;
-        //ya to prime hai
-        if(primes.count(no)){
-            ll sub = noOfPrimes - m[no];
-            ans += sub;
-            noOfPrimes++;
+        if(i == 0){
+            if(a[i] > 0){
+                cr = a[i];
+                flag = true;
+            }else{
+                cr = a[i];
+            }
+        }else{
+            if(flag){
+                if(a[i] > 0){
+                    cr += a[i];
+                }else{
+                    b.push_back(cr);
+                    flag = false;
+                    cr = a[i];
+                }
+            }else{
+                if(a[i] < 0){
+                    cr += a[i];
+                }else{
+                    b.push_back(cr);
+                    flag = true;
+                    cr = a[i];
+                }
+            }
         }
-        m[no]++;
     }
-    set<ll> counted;
-    for(int i = 0; i<n; i++){
-        if(primes.count(a[i])) continue;
-        ll sp = smallestPrime[a[i]];
-        ll secSp = a[i]/sp;
-        if(!primes.count(secSp)) continue;
-        ans += m[sp];
-        if(secSp != sp){
-            ans += m[secSp];
+
+    b.push_back(cr);
+
+    vvi c;
+
+    ll ne = 0, pos = 0;
+
+    ll ans = 0;
+    for(auto x : b){
+        if(x < 0){
+            ne += x;
+        }else{
+            pos += x;
         }
-        if(!counted.count(a[i])){
-            ll nn = m[a[i]];
-            ans += (nn*(nn+1))/2;
-            counted.insert(a[i]);
+        ans = max(ans, abs(x));
+        c.push_back({ne, pos});
+    }
+    ans = max(ans, abs(ne));
+    ans = max(ans, pos);
+    ne = 0;
+    for(int i = b.size()-1; i>=0; i--){
+        if(b[i] < 0){
+            ne += b[i];
+        }
+        c[i][0] = ne;
+    }
+    
+    ll i = 0;
+
+    if(b.size() == 1){
+        cout<<abs(b.back())<<endl;
+        return;
+    }
+
+    if(b.size() == 2){
+        if(b[0] > 0){
+            cout<<abs(b[0]) + abs(b[1])<<endl;
+            return;
+        }else{
+            cout<<max(abs(b[0]), abs(b[1]))<<endl;
+            return;
+        }
+    }
+    // for(auto x : c) cout<<x[0]<<" ";
+    // cout<<endl;
+    // for(auto x : c) cout<<x[1]<<" ";
+    // cout<<endl;
+    // for(auto x : b) cout<<x<<" ";
+    // cout<<endl;
+    if(b[0] > 0){
+        for(int i = 1; i<b.size(); i += 2){
+            ll ca = abs(c[i][0]) + c[i-1][1];
+            ans = max(ca, ans);
+        }
+    }else{
+        for(int i = 2; i<b.size(); i += 2){
+            ll ca = abs(c[i][0]) + c[i-1][1];
+            ans = max(ca, ans);
         }
     }
     cout<<ans<<endl;
@@ -153,7 +195,6 @@ int main() {
     #ifndef ONLINE_JUDGE
     freopen("Debug.txt", "w", stderr);
     #endif
-    sieve();
 
     fast_io();
     int t = 1;

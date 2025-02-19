@@ -28,6 +28,9 @@ void BFS(ll source, vector<vector<ll>> &graph) {
     }
 }
 
+//finding shortest between two nodes path using bfs
+void BFS
+
 int main() {
     ll n, m;
     cout << "Enter number of vertices and edges: ";
@@ -51,3 +54,4 @@ int main() {
 
     return 0;
 }
+
