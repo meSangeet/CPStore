@@ -90,33 +90,54 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
-    }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
+    //another instance of reading the question wrong
+    ll n; cin>>n;
+    ll k; cin>>k;
+    vi a(n);
+    string s; cin>>s;
+    rv(a);
+
+    ll lo = 0, hi = INT_MAX;
+    ll ans = hi;
+    while(lo <= hi){
+        ll mid = lo + (hi - lo)/2;
+        //now we need to check if this penalty is achievable
+        ll seg = 0;
+        bool flag = true;
+        
+        for(int i = 0; i<n; i++){
+            //if the current element should is blue then only we will start the iteration
+            //also it should be having penalty more than mid
+            if(s[i] == 'B' and a[i] > mid){
+                //segment started this will go on until the required cell is red and with penalty greater 
+                //than mid
+                seg++;
+                int j = i;
+                while(j < n){
+                    if(s[j] == 'R' and a[j] > mid) break;
+                    j++;
+                }
+
+                i = j;
+            }
+            
+        }
+
+        if(seg > k){
+            //not possible
+            lo = mid+1;
+        }else{
+            ans = mid;
+            hi = mid-1;
+        }
+
+        // cout<<hi<<" "<<lo<<endl;
+        debug(hi)
     }
 
-    pn;
+    cout<<ans<<endl;
 }
 
 // Main Function

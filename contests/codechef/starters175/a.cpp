@@ -90,33 +90,61 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
+    ll n; cin>>n;
+    ll o1 = 0, o2 = 0, o3 = 0, z1 = 0, z2 = 0, z3 = 0;
+    string s1,s2,s3;
+    cin>>s1>>s2>>s3;
+    for(char x : s1){
+        if(x == '0'){
+            z1++;
+        }else{
+            o1++;
+        }
+    }
+    for(char x : s3){
+        if(x == '0'){
+            z3++;
+        }else{
+            o3++;
+        }
+    }
+    for(char x : s2){
+        if(x == '0'){
+            z2++;
+        }else{
+            o2++;
+        }
+    }
+
+    ll t0 = z1+z2+z3;
+    ll t1 = o1+o2+o3;
+
+    if(t0%n){
+        cout<<-1<<endl;
         return;
     }
-    if(y >= x){
-        pn;
+    if(t1%n){
+        cout<<-1<<endl;
         return;
     }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
+    if(t0 == 3*n or t1 == 3*n){
+        cout<<0<<endl;
         return;
     }
 
-    pn;
+    if(t0 == 2*n){
+        cout<<min({z1,z2,z3})<<endl;
+        return;
+    }
+
+    if(t0 == n){
+        cout<<min({o1, o2, o3})<<endl;
+        return;
+    }
+
+    cout<<-1<<endl;
 }
 
 // Main Function

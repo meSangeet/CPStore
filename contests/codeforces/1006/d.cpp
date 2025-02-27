@@ -90,33 +90,51 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
+int countInversions(vector<int>& a) {
+    int n = a.size();
+    int inv = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (a[i] > a[j]) inv++;
+        }
     }
-    return an;
+    return inv;
 }
-// Solve Function
+
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
-    }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (int &x : a) cin >> x;
+    int l = 1, r = 1;
+    int minInversions = countInversions(a);
+    int temp = minInversions;
+    for(int i = n-1; i >= 0; i--){
+        int cl = i+1, cj = i+1;
+        int ci = temp;
+        int mini = ci;
+        for(int j = i+1; j<n; j++){
+            if(a[j] < a[i]){
+                ci--;
+            }else{
+                if(a[j] > a[i])
+                    ci++;
+            }
+
+            if(ci < mini){
+                mini = ci;
+                cj = j+1;
+            }
+        }
+
+        if(mini < minInversions){
+            minInversions = mini;
+            l = cl;
+            r = cj;
+        }
     }
 
-    pn;
+    cout<<l<<" "<<r<<endl;
 }
 
 // Main Function

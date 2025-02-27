@@ -97,12 +97,12 @@ set<ll> primes;
  
 // Function to sieve and fill the smallestPrime array
 void sieve() {
-	for (int i = 1; i <= MAX; ++i) smallestPrime[i] = i;
+	for (ll i = 1; i <= MAX; ++i) smallestPrime[i] = i;
  
-	for (int p = 2; p * p <= MAX; ++p) {
+	for (ll p = 2; p * p <= MAX; ++p) {
     	if (smallestPrime[p] == p) {
         	primes.insert(p);
-        	for (int i = p * p; i <= MAX; i += p) {
+        	for (ll i = p * p; i <= MAX; i += p) {
             	if (smallestPrime[i] == i) {
                 	smallestPrime[i] = p;
             	}
@@ -111,41 +111,25 @@ void sieve() {
 	}
 }
 
+ll rev(ll n, ll p) {
+    ll result = 0, temp = n;
+    while (temp > 0) {
+        result = result * p + (temp % p);
+        result %= MOD;
+        temp /= p;
+    }
+    return result;
+}
+
 // Solve Function
 void solve() {
     ll n; cin>>n;
-    ll ans = 0;
-    ll noOfPrimes = 0;
-    map<ll,ll> m;
-    vi a(n);
-    for(int i = 0; i<n; i++){
-        ll no; cin>>no;
-        a[i] = no;
-        //ya to prime hai
-        if(primes.count(no)){
-            ll sub = noOfPrimes - m[no];
-            ans += sub;
-            noOfPrimes++;
-        }
-        m[no]++;
+    ll i = 2;
+    while(i < 20){
+        ll temp = rev(n, i);
+        cout<<i<<" "<<temp<<endl;
+        i++;
     }
-    set<ll> counted;
-    for(int i = 0; i<n; i++){
-        if(primes.count(a[i])) continue;
-        ll sp = smallestPrime[a[i]];
-        ll secSp = a[i]/sp;
-        if(!primes.count(secSp)) continue;
-        ans += m[sp];
-        if(secSp != sp){
-            ans += m[secSp];
-        }
-        if(!counted.count(a[i])){
-            ll nn = m[a[i]];
-            ans += (nn*(nn+1))/2;
-            counted.insert(a[i]);
-        }
-    }
-    cout<<ans<<endl;
 }
 
 // Main Function

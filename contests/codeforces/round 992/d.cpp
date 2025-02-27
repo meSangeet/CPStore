@@ -90,33 +90,104 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
+    int n; cin>>n;
+    vector<vector<int>> tree(n+1);
+    vector<int> ans(n+1);
+    vector<int> st(2*n+10, 0);
+    for(int i = 1; i<=n-1; i++){
+        int u,v;
+        cin>>u>>v;
+        tree[u].push_back(v);
+        tree[v].push_back(u);
     }
-    if(y >= x){
-        pn;
-        return;
+    queue<int> q;
+
+    ans[1] = 1;
+    vector<bool> vis(n+1, false);
+    vis[1] = true;
+    bool flag = true;
+    int no = 5;
+    for(int nei : tree[1]){
+        vis[nei] = true;
+        if(flag){
+            st[2] = 1;
+            flag = false;
+            ans[nei] = 2;
+            q.push(nei);
+            continue;
+        }
+        if(no > 2*n){
+            cout<<-1<<endl;
+            return;
+        }
+        ans[nei] = no;
+        st[no] = 1;
+        no += 2;
+        q.push(nei);
     }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
+    
+
+    while(!q.empty()){
+        int node = q.front();
+        debug(node)
+        // cout<<"inside node - "<<node<<endl;
+        vis[node] = true;
+        q.pop();
+        no = ans[node];
+        int pos = no+1;
+        bool flag = false;
+        for(int child : tree[node]){
+            // cout<<"for child - "<<child<<endl;
+            if(!vis[child]){
+                if(!flag){
+                    flag = true;
+                    vis[child] = true;
+                    q.push(child);
+                    if(!st[pos]){
+                        st[pos] = 1;
+                        if(pos > 2*n){
+                            cout<<-1<<endl;
+                            return;
+                        }
+                        ans[child] = pos;
+                        pos = no + 4;
+                        continue;
+                    }
+
+                    pos = no + 4;
+                    while(st[pos]) pos += 2;
+                    if(pos > 2*n){
+                        cout<<-1<<endl;
+                        return;
+                    }
+                    st[pos] = 1;
+                    ans[child] = pos;;
+                    continue;
+                }
+                q.push(child);
+                vis[child] = true;
+                while(st[pos]){
+                    // debug(pos)
+                    pos += 2;
+                }
+                // cout<<pos<<" "<<endl;
+                if(pos > 2*n){
+                    cout<<-1<<endl;
+                    return;
+                }
+
+                ans[child] = pos;
+                st[pos] = 1;
+                pos += 2;
+            }
+        }
     }
 
-    pn;
+
+    for(int i = 1; i<=n; i++) cout<<ans[i]<<" ";
+    cout<<endl;
 }
 
 // Main Function

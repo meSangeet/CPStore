@@ -90,33 +90,29 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
-    }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
-    }
-
-    pn;
+    ll n, k;
+    cin >> n >> k;
+        
+    for (ll j = 0; j < n; j++) {
+        // (n-1 choose j) mod 2 is 1 if and only if
+        // every bit position that is 1 in j is also 1 in (n-1)
+            
+        // For first and last elements, it's always k
+        if (j == 0 || j == n-1) {
+            cout << k << " ";
+        } else {
+            // For other elements, check if (n-1 choose j) is odd
+            // This means checking if j is a "subset" of (n-1) in binary
+            if (((n-1) & j) == j) {
+                cout << k << " ";
+            } else {
+                cout << "0 ";
+            }
+        }
+    } 
+    cout << endl;
 }
 
 // Main Function

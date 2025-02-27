@@ -90,33 +90,66 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
-    }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
-    }
+    ll n,x,k; cin>>n>>x>>k;
+    ll co = 0;
+    ll t = 0;
+    int pos = 0;
+    ll mov = 0;
+    int i = 0;
+    string s; cin>>s;
+    bool flag = true;
+    do{
+        if(s[i] == 'R'){
+            pos++;
+        }else{
+            pos--;
+        }
+        mov++;
+        i++;
 
-    pn;
+        if(pos == 0){
+            flag = false;
+            break;
+        }
+    }while(pos != 0 and i < s.length());
+
+    //mov will have value after 0
+
+    i = 0;
+
+    do{
+
+        if(s[i] == 'R'){
+            x++;
+        }else{
+            x--;
+        }
+        i++;
+        t++;
+        if(t > k){
+            break;
+        }
+        if(x == 0){
+            co++;
+            break;
+        }
+    }while(x != 0 and i < n);
+    if(t >= k){
+        cout<<co<<endl;
+        return;
+    }
+    if(flag){
+        cout<<co<<endl;
+        return;
+    }
+    if(x == 0){
+        //counter must be 1
+        ll rt = k - t;
+        co += rt/mov;
+    }
+    cout<<co<<endl;
 }
 
 // Main Function

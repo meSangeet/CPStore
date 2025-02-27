@@ -90,33 +90,34 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
-    }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
+    ll n; cin>>n;
+    ll k; cin>>k;
+    vi a(n);
+    rv(a);
+
+    //no constraints
+
+    for(int i = 0; i<n; i++){
+        bool flag = false;
+        for(int j = 0; j<n; j++){
+            if(j == i) continue;
+            ll dif = abs(a[i] - a[j]);
+            if(dif % k == 0){
+                flag = true;
+                break;
+            }
+        }
+
+        if(!flag){
+            cout<<"YES\n";
+            cout<<i+1<<endl;
+            return;
+        }
     }
 
-    pn;
+    cout<<"NO\n";
 }
 
 // Main Function

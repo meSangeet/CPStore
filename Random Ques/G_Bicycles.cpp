@@ -1,87 +1,84 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <limits>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-const long long INF = 1e18;
-
-struct Edge {
-    int to;
-    long long weight;
-};
-
-struct State {
-    int node;
-    long long cost;
-    bool operator>(const State& other) const {
-        return cost > other.cost;
+int find_mex(set<int> &s) {
+    int mex = 1;
+    for (int num : s) {
+        if (num != mex) return mex;
+        mex++;
     }
-};
+    return mex;
+}
 
-long long findShortestTime(int n, vector<vector<Edge>>& graph, vector<int>& slowness) {
-    // Priority queue for Dijkstra's algorithm
-    priority_queue<State, vector<State>, greater<State>> pq;
-    vector<vector<long long>> dist(n + 1, vector<long long>(n + 1, INF));
-    
-    // Initialize distances using bikes from each city
-    for (int i = 1; i <= n; i++) {
-        dist[i][i] = 0;
-        pq.push({i, 0});
+int miniEle(vector<int> arr, int n) {
+    int mini = 1e9+10;
+    for(int i = 0 ; i < n ; i++)
+    {
+        mini = min(mini, arr[i]);
     }
-    
-    // Modified Dijkstra's to calculate minimum time
-    while (!pq.empty()) {
-        State current = pq.top();
-        pq.pop();
-        int u = current.node;
-        long long current_cost = current.cost;
+    return mini;
+}
 
-        if (current_cost > dist[u][u]) continue;
-
-        for (auto& edge : graph[u]) {
-            for (int bike_city = 1; bike_city <= n; bike_city++) {
-                long long new_cost = current_cost + edge.weight * slowness[bike_city - 1];
-                if (new_cost < dist[edge.to][bike_city]) {
-                    dist[edge.to][bike_city] = new_cost;
-                    pq.push({edge.to, new_cost});
-                }
+void solve(){
+        int n;
+        cin >> n;
+        vector<int> arr(n);
+        
+        int zero = 0, index = -1;
+        for (int i = 0; i < n; i++) {
+            cin >> arr[i];
+            if (arr[i] == 0) {
+                if (index == -1) index = i;
+                zero++;
             }
         }
-    }
 
-    // Calculate the minimum time to reach city n from city 1
-    long long result = INF;
-    for (int bike_city = 1; bike_city <= n; bike_city++) {
-        result = min(result, dist[n][bike_city]);
-    }
+        if (zero == 0) {
+            cout << n << endl;
+            return;
+        }
 
-    return result;
+        set<int> s;
+        for (int i = index + 1; i < n; i++) {
+            if (arr[i] != 0) s.insert(arr[i]);
+        }
+
+        int mex = find_mex(s);
+        // cout << mex << endl;
+        // 6 5 7 4 0 1 2 3 4
+        //cout << ans << endl;
+            
+        //cout << ans << endl;
+        //cout << index << endl;
+        if (index == 0) {
+            cout << n - zero + 1 << endl;
+            return;
+        }
+        int minii = INT_MAX;
+        for(int i = index-1; i>=0; i--){ 
+            if(arr[i] < mex){
+                cout<<n - zero<<endl;
+                return;
+            }
+
+            s.insert(arr[i]);
+
+            if(arr[i] == mex){
+                int newMex = mex;
+                while(s.count(newMex)){
+                    newMex++;
+                }
+                mex = newMex;
+            }
+        }
+        cout<<n-zero+1<<endl;
 }
 
 int main() {
     int t;
     cin >> t;
+    
     while (t--) {
-        int n, m;
-        cin >> n >> m;
-
-        vector<vector<Edge>> graph(n + 1);
-        for (int i = 0; i < m; i++) {
-            int u, v, w;
-            cin >> u >> v >> w;
-            graph[u].push_back({v, w});
-            graph[v].push_back({u, w});
-        }
-
-        vector<int> slowness(n);
-        for (int i = 0; i < n; i++) {
-            cin >> slowness[i];
-        }
-
-        cout << findShortestTime(n, graph, slowness) << endl;
+        solve();
     }
-    return 0;
 }

@@ -89,34 +89,46 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
-
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
+bool check(char a, char b){
+    if(b == '.') return true;
+    if(a == '1') return b == '0';
+    if(a == '0') return b == '1';
+    return false;
 }
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
+    string s; cin>>s;
+    char pv = '.';
+    ll o = 0, z = 0;
+    ll c = 0;
+    ll ind = -1;
+    ll i = 0;
+    for(char x : s){
+        if(x == '0'){
+            z++;
+        }else o++;
+        if(!check(x, pv)){
+            c++;
+        }
+        pv = x;
     }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
+    if(c == 0){
+        cout<<0<<endl;
         return;
     }
 
-    pn;
+    if(abs(z-o) <= 1){
+        cout<<1<<endl;
+        return;
+    }
+
+    if(abs(z-o) <= 3){
+        cout<<2<<endl;
+        return;
+    }
+
+    cout<<3<<endl;
+
 }
 
 // Main Function

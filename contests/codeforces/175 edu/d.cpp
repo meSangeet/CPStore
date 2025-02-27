@@ -23,7 +23,7 @@ using vvi = vector<vector<ll>>;
 using pi = pair<ll, ll>;
 
 // Constants
-const ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
 const ll INF = LLONG_MAX;
 
 // Macros
@@ -90,33 +90,64 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
-    }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
+    ll n; cin>>n;
+    vector<vector<ll>> tree(n+1);
+    vector<ll> par(n+1);
+    vector<ll> depth(n+1, 0);
+    for(ll i = 2; i<=n; i++){
+        ll u; cin>>u;
+        tree[u].push_back(i);
     }
 
-    pn;
+    unordered_map<ll, vector<ll>> nodes_with_height;
+
+    depth[1] = 0;
+
+    queue<ll> q;
+    q.push(1);
+    ll mh = 0;
+    while(!q.empty()){
+        ll node = q.front();
+        q.pop();
+        ll d = depth[node];
+        mh = max(d, mh);
+        nodes_with_height[d].push_back(node);
+        for(ll child : tree[node]){
+            par[child] = node;
+            q.push(child);
+            depth[child] = d+1;
+        }
+    }
+
+    ll ans = 0;
+
+    ans++; //this is for 1
+    vector<ll> depthCount(mh+1,0);
+    vector<ll> nodeCount(n+1,0);
+    for(ll child : tree[1]){
+        ans++;
+        depthCount[1]++;
+        nodeCount[child] = 1;
+    }
+
+    for(ll he = 2; he <= mh; he++){
+        for(ll node : nodes_with_height[he]){
+            ll pc = nodeCount[par[node]];
+            ll ways = depthCount[he-1] - pc;
+            nodeCount[node] = ways;
+            depthCount[he] += ways;
+            depthCount[he] %= MOD;
+            nodeCount[node] %= MOD;
+        }
+        ans += depthCount[he];
+        ans %= MOD;
+    }
+
+    cout<<ans<<endl;
+    
+
 }
 
 // Main Function

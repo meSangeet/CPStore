@@ -90,33 +90,43 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
+
+ll rev(ll n, ll p) {
+    ll result = 0, temp = n;
+    while (temp > 0) {
+        result = result * p + (temp % p);
+        result %= MOD;
+        temp /= p;
     }
-    return an;
+    return result;
 }
+
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
+    ll n, k;
+    cin >> n >> k;
+        
+    ll sum = 0;
+        
+    // Special case: n = 1
+    if (n == 1) {
+        sum = (k - 1) % MOD;
+    } else {
+        // For bases 2 to min(k, n), calculate rev(n, p)
+        for (ll p = 2; p <= min(k, n); p++) {
+            ll temp = rev(n,p);
+            // debug(n)
+            // debug(temp)
+            sum = (sum + temp) % MOD;
+        }
+            
+        // For bases > n, n is a single digit in base p, so rev(n, p) = n
+        if (k > n) {
+            sum = (sum + ((k - n) % MOD) * (n % MOD)) % MOD;
+        }
     }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
-    }
-
-    pn;
+        
+    cout << sum << endl;
 }
 
 // Main Function

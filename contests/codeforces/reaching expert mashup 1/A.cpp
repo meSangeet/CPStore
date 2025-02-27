@@ -90,33 +90,72 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
+struct TrieNode {
+    TrieNode* children[2];  // Two children: 0 and 1
+    TrieNode() {
+        children[0] = children[1] = nullptr;
     }
-    return an;
-}
-// Solve Function
-void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
+};
+
+class Trie {
+public:
+    TrieNode* root;
+    Trie() {
+        root = new TrieNode();
     }
-    if(y >= x){
-        pn;
-        return;
-    }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
-        return;
+    
+    // Insert prefix XOR into Trie
+    void insert(int num) {
+        TrieNode* node = root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if (!node->children[bit]) {
+                node->children[bit] = new TrieNode();
+            }
+            node = node->children[bit];
+        }
     }
 
-    pn;
+    // Find maximum XOR for given prefix
+    int getMaxXOR(int num) {
+        TrieNode* node = root;
+        int maxXor = 0;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            int toggledBit = 1 - bit;
+            if (node->children[toggledBit]) {  // Prefer opposite bit for max XOR
+                maxXor |= (1 << i);
+                node = node->children[toggledBit];
+            } else {
+                node = node->children[bit];
+            }
+        }
+        return maxXor;
+    }
+};
+
+// Function to find the maximum XOR subarray
+int maxSubarrayXOR(vector<int>& arr) {
+    Trie trie;
+    trie.insert(0); // Insert 0 to handle case when subarray starts from index 0
+    int maxXOR = 0, prefixXOR = 0;
+    
+    for (int num : arr) {
+        prefixXOR ^= num;  // Compute prefix XOR
+        maxXOR = max(maxXOR, trie.getMaxXOR(prefixXOR));  // Get max XOR subarray
+        trie.insert(prefixXOR);  // Insert prefix XOR into Trie
+    }
+    return maxXOR;
+}
+
+// Solve Function
+void solve() {
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i = 0; i<n; i++){
+        cin>>a[i];
+    }
+    cout<<maxSubarrayXOR(a)<<endl;
 }
 
 // Main Function

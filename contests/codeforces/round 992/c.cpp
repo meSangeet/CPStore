@@ -90,33 +90,66 @@ void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
 template <typename T>
 void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
 
-ll ss(ll n){
-    ll an = 0;
-    while(n){
-        an += n%10;
-        n /= 10;
-    }
-    return an;
-}
 // Solve Function
 void solve() {
-    ll x,y; cin>>x>>y;
-    if(x+1 == y){
-        py;
-        return;
+    ll n,k; cin>>n>>k;
+    set<ll> s;
+    for(ll i = 1; i <= n; i++){
+        s.insert(i);
     }
-    if(y >= x){
-        pn;
-        return;
+    vector<ll> ans(n+1,0);
+    vector<ll> no;
+    no.push_back(1);
+    if(n >= 2){
+        no.push_back(2);
     }
-    ll temp = x-y;
-    // temp++;
-    if(temp%9 == 8){
-        py;
+    ll su = 2;
+    while(no.size()<n and no.back()<1e12+3){
+        su *= 2;
+        no.push_back(su);
+    }
+
+    if(no.back() < k){
+        cout<<-1<<endl;
         return;
     }
 
-    pn;
+    // reverse(no.begin(), no.end());
+    // no.pop_back();
+    ll li = n;
+    while(k > 0){
+        if(k == 1){
+            ans[li] = n;
+            s.erase(n);
+            break;
+        }
+        // debug(k)
+        auto it = lower_bound(all(no), k) - no.begin(); //this will give us the index
+        ll ind = it;
+        ind--;
+        // debug(ind)
+
+        //this number will now we subtracted
+
+        k -= no[ind];
+
+        ans[li] = n - ind - 1;
+        li--;
+        s.erase(n-ind-1);
+    }
+
+    li = 1;
+    for(ll x : s){
+        ans[li] = x;
+        li++;
+    }
+
+    for(ll i = 1; i<=n; i++){
+        cout<<ans[i]<<" ";
+    }
+
+    cout<<endl;
+
 }
 
 // Main Function
