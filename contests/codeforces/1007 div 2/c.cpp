@@ -52,7 +52,13 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Arrive at the solution first and then start coding
 // Solve Function
 void solve() {
-    
+    ll k; cin>>k;
+    k--;
+    if(k%3 == 0){
+        cout<<"YES\n";
+    }else{
+        cout<<"NO\n";
+    }
 }
 
 // Main Function

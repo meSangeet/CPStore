@@ -105,28 +105,87 @@ ll rev(ll n, ll p) {
 void solve() {
     ll n, k;
     cin >> n >> k;
-        
-    ll sum = 0;
-        
-    // Special case: n = 1
-    if (n == 1) {
-        sum = (k - 1) % MOD;
-    } else {
-        // For bases 2 to min(k, n), calculate rev(n, p)
-        for (ll p = 2; p <= min(k, n); p++) {
-            ll temp = rev(n,p);
-            // debug(n)
-            // debug(temp)
-            sum = (sum + temp) % MOD;
-        }
-            
-        // For bases > n, n is a single digit in base p, so rev(n, p) = n
-        if (k > n) {
-            sum = (sum + ((k - n) % MOD) * (n % MOD)) % MOD;
-        }
+    ll ans = 0;
+    //for cases when k > n
+    if(k > n){
+        ll remainingPs = k - n;
+        ans += n * remainingPs;
+        ans %= MOD;
     }
-        
-    cout << sum << endl;
+    ll mm = sqrtl(n);
+    //for 2 to root n 
+    for(ll i = 2; i <= k and n/i >= mm; i++){
+        //one answer will be of simple brute force rev
+        ans += rev(n, i);
+        ans %= MOD;
+    }
+    cout<<ans<<endl;
+    if(k <= mm){
+        cout<<ans<<endl;
+        return;
+    }
+    mm -= 1;
+    
+    while(mm){
+        ll i = mm+1;
+        mm--;
+        //one answer will be of that equation
+        ll lef = n/i;
+        ll ri = n/(i-1);
+        if(ri > k){
+            ri = k;
+        }
+        ll F = i-1;
+        ll sp = ri*(ri+1);
+        sp %= MOD;
+        sp /= 2;
+        ll sRem = lef*(lef+1);
+        sRem %= MOD;
+        sRem /= 2;
+        sp -= sRem;
+        while(sp < 0) sp += MOD;
+        sp %= MOD;
+        sp *= n;
+        sp %= MOD;
+
+        //squared term
+        ll ssp =ri*(ri+1);
+        ssp %= MOD;
+        ssp *= (2*ri + 1);
+        ssp %= MOD;
+        ssp /= 6;
+
+        ll ssRem = lef*(lef+1);
+        ssRem %= MOD;
+        ssRem *= (2*lef+1);
+        ssRem %= MOD;
+        ssRem /= 6;
+
+        ssp -= ssRem;
+        while(ssp < 0) ssp += MOD;
+        ssp %= MOD;
+        ssp *= F;
+
+        //third term
+        ll terms = ri - lef;
+        ll finalNo = terms*F;
+        finalNo %= MOD;
+
+        finalNo += ssp;
+        finalNo %= MOD;
+
+        finalNo += sp;
+        finalNo %= MOD;
+
+        ans += finalNo;
+        ans %= MOD;
+
+        if(ri == k){
+            break;
+        }
+    } 
+    
+    cout<<ans<<endl;
 }
 
 // Main Function

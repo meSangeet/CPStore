@@ -51,8 +51,35 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Make sure to read the constraints before solving the questions
 // Arrive at the solution first and then start coding
 // Solve Function
+bool isPerfectSquare(ll num) {
+    if (num < 0) return false; // Negative numbers are not perfect squares
+    ll root = static_cast<ll>(sqrtl(num));
+    return root * root == num;
+}
+
 void solve() {
-    
+    ll n; cin>>n;
+    ll su = n*(n+1);
+    su /= 2;
+    if(isPerfectSquare(su)){
+        cout<<-1<<endl;
+        return;
+    }
+
+    cout<<2<<" "<<1<<" ";
+    su = 3;
+
+    for(ll i = 3; i<=n; i++){
+        su += i;
+        if(isPerfectSquare(su)){
+            cout<<i+1<<" "<<i<<" ";
+            su += i+1;
+            i++;
+        }else{
+            cout<<i<<" ";
+        }
+    }
+    cout<<endl;
 }
 
 // Main Function
