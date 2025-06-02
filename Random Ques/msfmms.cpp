@@ -51,16 +51,49 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Make sure to read the constraints before solving the questions
 // Arrive at the solution first and then start coding
 // Solve Function
-void solve() {
-    ll n, r, t; cin>>n>>r>>t;
-    vector<vector<ll>> tree(n+1);
-    for(ll i = 1; i<=n-1; i++){
-        ll u,v; cin>>u>>n;
-        tree[u].push_back(v);
-        tree[v].push_back(u);
+ll func(ll n, ll k, vector<ll> &px, vector<ll> &a){
+    if(k <= n){
+        return a[k];
     }
 
-    
+    //now we need xor till l/2
+    k /= 2;
+
+    if(k <= n){
+        return px[k];
+    }
+
+    if(k%2){
+        return px[n];
+    }
+
+    ll xo = px[n];
+    ll sno = func(n,k,px,a);
+    return (xo^sno);
+}
+
+void solve() {
+    ll n; cin>>n;
+    ll l,k; cin>>l>>k;
+    vector<ll> a(n+1);
+    vector<ll> px(n+1);
+    ll xo = 0;
+
+    for(int i = 1; i<=n; i++){
+        cin>>a[i];
+        xo ^= a[i];
+        px[i] = xo;
+    }
+
+    if(n%2 == 0){
+        ll no = px[(n+1)/2];
+        xo ^= no;
+        px.push_back(xo);
+        a.push_back(no);
+        n++;
+    }
+
+    cout<<func(n, k, px, a)<<endl;
 }
 
 // Main Function

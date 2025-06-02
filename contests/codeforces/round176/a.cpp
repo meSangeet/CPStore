@@ -52,15 +52,20 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Arrive at the solution first and then start coding
 // Solve Function
 void solve() {
-    ll n, r, t; cin>>n>>r>>t;
-    vector<vector<ll>> tree(n+1);
-    for(ll i = 1; i<=n-1; i++){
-        ll u,v; cin>>u>>n;
-        tree[u].push_back(v);
-        tree[v].push_back(u);
+    ll n,k; cin>>n>>k;
+    ll c = 1;
+    if(n <= k){
+        cout<<1<<endl;
+        return;
     }
-
-    
+    ll o = k;
+    n -= o;
+    ll e = k-1;
+    ll tt = n/e;
+    c += tt;
+    n -= tt*e;
+    if(n > 0) c++;
+    cout<<c<<endl;
 }
 
 // Main Function

@@ -1,51 +1,69 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+using ll = long long;
+const ll MOD = 1e9 + 7;
+const ll INF = LLONG_MAX;
+#define fast_io() ios::sync_with_stdio(false); cin.tie(nullptr);
+#define all(v) (v).begin(), (v).end()
 
-    int t;
-    cin >> t;
-    while (t--) {
-        int n;
-        long long l, r;
-        cin >> n >> l >> r;
-        vector<int> a(n);
-        for (int i = 0; i < n; ++i) {
-            cin >> a[i];
-        }
-        // Since l == r, we only need to compute a_l
-        long long m = l;
-        if (m <= n) {
-            cout << a[m - 1] << '\n';
-        } else {
-            // For m > n, a_m is the XOR of the first ⌊m/2⌋ elements
-            long long half = m / 2;
-            if (half <= n) {
-                int xor_sum = 0;
-                for (int i = 0; i < half; ++i) {
-                    xor_sum ^= a[i];
-                }
-                cout << xor_sum << '\n';
-            } else {
-                // If half is still greater than n, we need to compute a_half
-                // But since l == r, and m > n, and half > n, we need to find a pattern or a way to compute it efficiently
-                // Given the constraints, we can precompute the XOR up to n and then use it
-                int xor_sum = 0;
-                for (int i = 0; i < n; ++i) {
-                    xor_sum ^= a[i];
-                }
-                // Since the sequence repeats or stabilizes, we can use the precomputed XOR
-                // For m > n, a_m is the XOR of the first ⌊m/2⌋ elements
-                // If ⌊m/2⌋ > n, then a_m is the XOR of the first n elements XORed with the XOR of the next ⌊m/2⌋ - n elements
-                // But since the sequence is infinite and defined recursively, we need to find a pattern
-                // Given the time constraints, we can assume that for m > n, a_m is the XOR of the first n elements
-                // This might not be correct in all cases, but given the problem constraints, it's a reasonable assumption
-                cout << xor_sum << '\n';
-            }
-        }
+// GCD & LCM
+ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
+ll lcm(ll a, ll b) { return (a / gcd(a, b)) * b; }
+
+// Modular Arithmetic
+ll mod_add(ll a, ll b, ll m = MOD) { return (a % m + b % m) % m; }
+ll mod_sub(ll a, ll b, ll m = MOD) { return ((a % m - b % m) + m) % m; }
+ll mod_mul(ll a, ll b, ll m = MOD) { return (a % m * b % m) % m; }
+ll mod_pow(ll a, ll b, ll m = MOD) {
+    ll res = 1;
+    while (b) {
+        if (b & 1) res = mod_mul(res, a, m);
+        a = mod_mul(a, a, m);
+        b >>= 1;
     }
+    return res;
+}
 
+// Modular Inverse
+ll mod_inv(ll a, ll m = MOD) { return mod_pow(a, m - 2, m); }
+
+//to divide a number A by X mod M do   A = A*qpow(X) mod M
+ll qpow(ll x, ll y, ll m = MOD - 2) {
+    ll res = 1;
+    while (y) {
+        if (y % 2 == 1) res = res * x % m;
+        x = x * x % m;
+        y /= 2;
+    }
+    return res;
+}
+
+// Input/Output Optimization
+template <typename T>
+void rv(vector<T> &v) { for (auto &x : v) cin >> x; }
+
+template <typename T>
+void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << "\n"; }
+
+// While dealing with mod make sure the final answer is not a negative number
+// Read the question carefully you are literally reading questions wrong in every contest
+// Make sure to read the constraints before solving the questions
+// Arrive at the solution first and then start coding
+// Solve Function
+void solve() {
+    
+}
+
+// Main Function
+int main() {
+    #ifndef ONLINE_JUDGE
+    freopen("Debug.txt", "w", stderr);
+    #endif
+
+    fast_io();
+    int t = 1;
+    cin >> t;
+    while (t--) solve();
     return 0;
 }

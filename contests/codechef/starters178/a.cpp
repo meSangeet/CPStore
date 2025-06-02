@@ -52,15 +52,85 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Arrive at the solution first and then start coding
 // Solve Function
 void solve() {
-    ll n, r, t; cin>>n>>r>>t;
-    vector<vector<ll>> tree(n+1);
-    for(ll i = 1; i<=n-1; i++){
-        ll u,v; cin>>u>>n;
-        tree[u].push_back(v);
-        tree[v].push_back(u);
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(int i = 0; i<n; i++) cin>>a[i];
+
+    vector<ll> pref(n,0), suf(n,0), pd(n,0);
+    for(int i = 0; i<n; i++){
+        if(i == 0){
+            pref[0] = 1;
+            continue;
+        }
+
+        dif[i] = a[i] - a[i-1];
+
+        if(a[i] > a[i-1] and dif[i] > dif[i-1] and pref[i-1] == 1){
+            pref[i] = 1;
+        }
+    }
+    ll nd = LLONG_MAX;
+    suf[n-1] = 1;
+    for(int i = n-2; i>=0; i--){
+        if(a[i] < a[i+1] and dif[i+1] < nd and suf[i+1] == 1){
+            suf[i] = 1;
+        }
+        nd = dif[i+1];
+    }
+    if(n == 1){
+        cout<<1<<endl;
+        return;
+    }
+    for(int i = 0; i<n; i++){
+        if(i == 0){
+            if(suf[i+1]){
+                cout<<1;
+            }else{
+                cout<<0;
+            }
+        }else if(i == n-1){
+            if(pref[i-1]){
+                cout<<1;
+            }else{
+                cout<<0;
+            }
+        }else{
+            if(!pref[i-1]){
+                cout<<0;
+                continue;
+            }
+
+            if(!suf[i+1]){
+                cout<<0;
+                continue;
+            }
+
+            if(a[i-1] > a[i+1]){
+                cout<<0;
+                continue;
+            }
+
+            ll cd = a[i+1] - a[i-1];
+            if(cd <= dif[i-1]){
+                cout<<0;
+                continue;
+            }
+
+            nd = LLONG_MAX;
+            if(i+2 < n){
+                nd = dif[i+2];
+            }
+
+            if(cd >= nd){
+                cout<<0;
+                continue;
+            }
+
+            cout<<1;
+        }
     }
 
-    
+    cout<<endl;
 }
 
 // Main Function

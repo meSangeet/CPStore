@@ -52,15 +52,34 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Arrive at the solution first and then start coding
 // Solve Function
 void solve() {
-    ll n, r, t; cin>>n>>r>>t;
-    vector<vector<ll>> tree(n+1);
-    for(ll i = 1; i<=n-1; i++){
-        ll u,v; cin>>u>>n;
-        tree[u].push_back(v);
-        tree[v].push_back(u);
-    }
-
+    ll n; cin>>n;
+    vector<ll> a(2*n);
+    for(ll i = 0; i<2*n; i++) cin>>a[i];
+    sort(all(a));
+    vector<ll> ans1;
+    vector<ll> ans2;
+    ll cur = 2*n-1;
+    ll tot = 0;
+    ll ss = 0;
     
+    bool flag = true;
+    ll fn = a.back();
+    ll i = 0;
+    ll su = 0;
+    while(i < n-1){
+        ans1.push_back(a[i]);
+        i++;
+        su += ans1.back();
+    }
+    while(i < 2*n-1){
+        ans2.push_back(a[i]);
+        su -= ans2.back();
+        i++;
+    }
+    ans1.push_back(fn-su);
+    cout<<fn<<" ";
+    for(int j = 0; j<n; j++) cout<<ans1[j]<<" "<<ans2[j]<<" ";
+    cout<<endl;
 }
 
 // Main Function

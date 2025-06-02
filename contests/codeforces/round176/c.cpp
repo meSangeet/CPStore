@@ -52,15 +52,41 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Arrive at the solution first and then start coding
 // Solve Function
 void solve() {
-    ll n, r, t; cin>>n>>r>>t;
-    vector<vector<ll>> tree(n+1);
-    for(ll i = 1; i<=n-1; i++){
-        ll u,v; cin>>u>>n;
-        tree[u].push_back(v);
-        tree[v].push_back(u);
+    ll n, m;
+    cin >> n >> m;
+    vector<ll> a(m);
+    ll ans = 0;
+
+    for (int i = 0; i < m; i++) cin >> a[i];
+
+    sort(a.begin(), a.end());
+
+    for (int seg = 1; seg <= n / 2; seg++) {
+        ll s1 = seg;
+        ll s2 = n - s1;
+        // cout<<s1<<" "<<s2<<endl;
+        auto it1 = lower_bound(a.begin(), a.end(), s1);
+        auto it2 = lower_bound(a.begin(), a.end(), s2);
+
+        if (it1 == a.end() || it2 == a.end()) continue; // Ensure valid iterators
+
+        ll i1 = it1 - a.begin();
+        ll i2 = it2 - a.begin();
+
+        ll e1 = m - i1;
+        ll e2 = m - i2;
+
+        ll extra = e1 - e2;
+        ll ca = extra * e2;
+        ca *= 2;
+        ll ca2 = (e2) * (e2 - 1);
+        if(s1 != s2) ca2 *= 2;
+        ca += ca2;
+        // cout<<ca<<endl;
+        ans += ca;
     }
 
-    
+    cout << ans << endl;
 }
 
 // Main Function

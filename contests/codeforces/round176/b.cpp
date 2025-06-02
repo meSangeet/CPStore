@@ -52,15 +52,45 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Arrive at the solution first and then start coding
 // Solve Function
 void solve() {
-    ll n, r, t; cin>>n>>r>>t;
-    vector<vector<ll>> tree(n+1);
-    for(ll i = 1; i<=n-1; i++){
-        ll u,v; cin>>u>>n;
-        tree[u].push_back(v);
-        tree[v].push_back(u);
-    }
+    ll n,k; cin>>n>>k;
+    vector<ll> a(n);
+    for(int i = 0; i<n; i++) cin>>a[i];
+    if(k == 1){
+        ll ele = *max_element(all(a));
+        if(a[0] != ele and a[n-1] != ele){
+            cout<<ele+max(a[0], a[n-1])<<endl;
+            return;
+        }
 
-    
+        if(a[0] == ele){
+            ll ee = -1;
+            for(int i = 1; i<n; i++){
+                ee = max(ee, a[i]);
+            }
+
+            cout<<ele+ee<<endl;
+            return;
+        }
+
+        if(a[n-1] == ele){
+            ll ee = -1;
+            for(int i = 0; i<n-1; i++){
+                ee = max(ee, a[i]);
+            }
+
+            cout<<ele+ee<<endl;
+            return;
+        }
+
+
+    }
+    sort(all(a));
+    reverse(all(a));
+
+    ll su = 0;
+    for(int i = 0; i<k+1; i++) su += a[i];
+
+    cout<<su<<endl;
 }
 
 // Main Function
