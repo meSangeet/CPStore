@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
-using namespace std;                        
-     
-using ll = long long;                        
-const ll MOD = 1e9 + 7;                      
-const ll INF = LLONG_MAX;                     
-#define fast_io() ios::sync_with_stdio(false); cin.tie(nullptr);
-#define all(v) (v).begin(), (v).end()         
+using namespace std;
 
-// GCD & LCM                                                 
+using ll = long long;
+const ll MOD = 1e9 + 7;
+const ll INF = LLONG_MAX;
+#define fast_io() ios::sync_with_stdio(false); cin.tie(nullptr);
+#define all(v) (v).begin(), (v).end()
+
+// GCD & LCM
 ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
 ll lcm(ll a, ll b) { return (a / gcd(a, b)) * b; }
 
@@ -52,7 +52,11 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Arrive at the solution first and then start coding
 // Solve Function
 void solve() {
-    
+    ll a,x,y;
+    cin>>a>>x>>y;
+    if(x > y) swap(x,y);
+    if(a < x or a > y) cout<<"YES\n";
+    else cout<<"NO\n";
 }
 
 // Main Function

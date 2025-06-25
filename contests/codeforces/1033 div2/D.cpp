@@ -51,10 +51,83 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Make sure to read the constraints before solving the questions
 // Arrive at the solution first and then start coding
 // Solve Function
-void solve() {
-    
+
+// Compute C(n, r) % MOD using precomputed modular inverses
+ll nCr_mod(ll n, int r, const vector<ll>& inv) {
+    ll res = 1;
+    for (int i = 1; i <= r; ++i) {
+        res = res * ((n - r + i) % MOD) % MOD;
+        res = res * inv[i] % MOD;
+    }
+    return res;
 }
 
+void solve() {
+    int n;
+        cin >> n;
+        vector<pair<int, int>> edges;
+        vector<vector<ll>> vec(n+1);
+        vector<int> degree(n + 1, 0);
+        vector<bool> vis(n+1, false);
+        for (int i = 0; i < n - 1; ++i) {
+            int u, v;
+            cin >> u >> v;
+            vec[u].push_back(v);
+            vec[v].push_back(u);
+        }
+
+    bool val = false;
+    ll ff,fv, sv;
+    for(int i = 1; i<=n; i++){
+        if(vec[i].size() == 2){
+            ll n1 = vec[i][0];
+            ll n2 = vec[i][1];
+                val = true;
+                ff = n1;
+                fv = i;
+                sv = n2;
+                break;
+        }
+    }
+    if(!val){
+        cout<<"NO\n";
+        return;
+    }
+    cout<<"YES\n";
+    vector<ll> oi(n+1, 0);
+    vis[ff] = true;
+    vis[fv] = true;
+    cout<<ff<<" "<<fv<<endl;
+    cout<<fv<<" "<<sv<<endl;
+    vis[sv] = true;
+    oi[ff] = 1;
+    oi[fv] = 2;
+    oi[sv] = 2;
+    queue<ll> q;
+    q.push(ff);
+    q.push(fv);
+    q.push(sv);
+
+    while(!q.empty()){
+        ll node = q.front();
+        vis[node] = true;
+        ll oo = oi[node];
+        q.pop();
+        for(ll nei : vec[node]){
+            if(vis[nei]) continue;
+            if(oo == 2){
+                cout<<nei<<" "<<node<<endl;
+                oi[nei] = 1;
+                q.push(nei);
+            }else{
+                cout<<node<<" "<<nei<<endl;
+                oi[nei] = 2;
+                q.push(nei);
+            }
+        }
+    }
+
+}
 // Main Function
 int main() {
     #ifndef ONLINE_JUDGE

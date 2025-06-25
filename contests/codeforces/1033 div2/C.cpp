@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
-using namespace std;                        
-     
-using ll = long long;                        
-const ll MOD = 1e9 + 7;                      
-const ll INF = LLONG_MAX;                     
-#define fast_io() ios::sync_with_stdio(false); cin.tie(nullptr);
-#define all(v) (v).begin(), (v).end()         
+using namespace std;
 
-// GCD & LCM                                                 
+using ll = long long;
+const ll MOD = 1e9 + 7;
+const ll INF = LLONG_MAX;
+#define fast_io() ios::sync_with_stdio(false); cin.tie(nullptr);
+#define all(v) (v).begin(), (v).end()
+
+// GCD & LCM
 ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
 ll lcm(ll a, ll b) { return (a / gcd(a, b)) * b; }
 
@@ -53,6 +53,44 @@ void pv(const vector<T> &v) { for (const auto &x : v) cout << x << " "; cout << 
 // Solve Function
 void solve() {
     
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(int i = 0; i<n; i++) cin>>a[i];
+    sort(a.begin(), a.end());
+    ll ans = 0;
+    for (int i = 0; i < n - 2; ++i) {
+        for (int j = i + 1; j < n - 1; ++j) {
+            ll sum_ij = a[i] + a[j];
+            ll l = j + 1, r = n - 1, idx = j;
+            while (l <= r) {
+                ll mid = (l + r) / 2;
+                if (a[mid] < sum_ij) {
+                    idx = mid;
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+            ll target = a[n - 1] - sum_ij;
+            l = j + 1, r = idx;
+            ll pos = idx + 1;  // if no a[k] > target, pos will remain out of bound
+
+            while (l <= r) {
+                ll mid = (l + r) / 2;
+                if (a[mid] > target) {
+                    pos = mid;
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+
+            if (pos <= idx) {
+                ans += (idx - pos + 1);
+            }
+        }
+    }
+    cout<<ans<<endl;
 }
 
 // Main Function
