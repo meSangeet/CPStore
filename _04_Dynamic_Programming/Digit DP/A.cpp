@@ -23,7 +23,7 @@ using namespace std;
 #define ll long long
 
 int main(){
-    cout<<"Hello World! - ";
+    
     int n; cin>>n;
     cout<<n<<endl;
     return 0;
